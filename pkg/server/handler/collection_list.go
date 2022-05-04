@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 )
 
@@ -20,10 +19,6 @@ func HandleCollectionList() http.HandlerFunc {
 			res CollectionListResponse
 		)
 
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(&res); err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+		WriteJson(w, res)
 	}
 }

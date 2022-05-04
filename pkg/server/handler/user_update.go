@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 )
 
@@ -15,10 +14,6 @@ func HandleUserUpdate() http.HandlerFunc {
 			res UserUpdateResponse
 		)
 
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(&res); err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+		WriteJson(w, res)
 	}
 }
