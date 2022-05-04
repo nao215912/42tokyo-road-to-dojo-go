@@ -19,6 +19,6 @@ func HandleRankingList() http.HandlerFunc {
 			res RankingListResponse
 		)
 
-		WriteJson(w, res)
+		WriteJson(w, &res)
 	}
 }

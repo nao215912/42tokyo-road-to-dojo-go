@@ -19,6 +19,6 @@ func HandleCollectionList() http.HandlerFunc {
 			res CollectionListResponse
 		)
 
-		WriteJson(w, res)
+		WriteJson(w, &res)
 	}
 }

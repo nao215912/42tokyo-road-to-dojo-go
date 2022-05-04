@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"42tokyo-road-to-dojo-go/pkg/http/middleware"
 	"net/http"
 )
 
@@ -16,7 +17,9 @@ func HandleUserGet() http.HandlerFunc {
 		var (
 			res UserGetResponse
 		)
+		// Todo: error handle
+		res.Name, _ = middleware.UserOf(r)
 
-		WriteJson(w, res)
+		WriteJson(w, &res)
 	}
 }

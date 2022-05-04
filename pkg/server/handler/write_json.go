@@ -5,8 +5,8 @@ import (
 	"net/http"
 )
 
-func WriteJson(w http.ResponseWriter, v any) {
-	w.Header().Set("Content-Type", "application/json")
+func WriteJson(w http.ResponseWriter, v interface{}) {
+	w.Header().Add("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(v); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return

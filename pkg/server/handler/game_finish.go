@@ -14,6 +14,6 @@ func HandleGameFinish() http.HandlerFunc {
 			res GameFinishResponse
 		)
 
-		WriteJson(w, res)
+		WriteJson(w, &res)
 	}
 }

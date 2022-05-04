@@ -1,6 +1,7 @@
 package server
 
 import (
+	"42tokyo-road-to-dojo-go/pkg/http/middleware"
 	"log"
 	"net/http"
 
@@ -14,16 +15,16 @@ func Serve(addr string) {
 	http.HandleFunc("/setting/get", get(handler.HandleSettingGet()))
 
 	http.HandleFunc("/user/create", post(handler.HandleUserCreate()))
-	http.HandleFunc("/user/get", get(handler.HandleUserGet()))
-	http.HandleFunc("/user/update", post(handler.HandleUserUpdate()))
+	http.HandleFunc("/user/get", get(middleware.Authenticate(handler.HandleUserGet())))
+	http.HandleFunc("/user/update", post(middleware.Authenticate(handler.HandleUserUpdate())))
 
-	http.HandleFunc("/game/finish", post(handler.HandleGameFinish()))
+	http.HandleFunc("/game/finish", post(middleware.Authenticate(handler.HandleGameFinish())))
 
-	http.HandleFunc("/gacha/draw", post(handler.HandleGachaDraw()))
+	http.HandleFunc("/gacha/draw", post(middleware.Authenticate(handler.HandleGachaDraw())))
 
-	http.HandleFunc("/ranking/list", get(handler.HandleRankingList()))
+	http.HandleFunc("/ranking/list", get(middleware.Authenticate(handler.HandleRankingList())))
 
-	http.HandleFunc("/collection/list", get(handler.HandleCollectionList()))
+	http.HandleFunc("/collection/list", get(middleware.Authenticate(handler.HandleCollectionList())))
 
 	// TODO: 認証を行うmiddlewareを実装する
 	// middlewareは pkg/http/middleware パッケージを利用する
@@ -66,9 +67,6 @@ func httpMethod(apiFunc http.HandlerFunc, method string) http.HandlerFunc {
 			writer.Write([]byte("Method Not Allowed"))
 			return
 		}
-
-		// 共通のレスポンスヘッダを設定
-		writer.Header().Add("Content-Type", "application/json")
 		apiFunc(writer, request)
 	}
 }

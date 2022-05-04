@@ -14,6 +14,6 @@ func HandleUserUpdate() http.HandlerFunc {
 			res UserUpdateResponse
 		)
 
-		WriteJson(w, res)
+		WriteJson(w, &res)
 	}
 }

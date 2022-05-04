@@ -25,6 +25,6 @@ func HandleUserCreate() http.HandlerFunc {
 			return
 		}
 
-		WriteJson(w, res)
+		WriteJson(w, &res)
 	}
 }

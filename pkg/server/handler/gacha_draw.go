@@ -19,6 +19,6 @@ func HandleGachaDraw() http.HandlerFunc {
 			res GachaDrawResponse
 		)
 
-		WriteJson(w, res)
+		WriteJson(w, &res)
 	}
 }
