@@ -1,23 +1,23 @@
-package user
+package handler
 
 import (
 	"encoding/json"
 	"net/http"
 )
 
-type CreateRequest struct {
+type UserCreateRequest struct {
 	Name string `json:"name"`
 }
 
-type CreateResponse struct {
+type UserCreateResponse struct {
 	Token string `json:"token"`
 }
 
-func HandleCreate() http.HandlerFunc {
+func HandleUserCreate() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			req CreateRequest
-			res CreateResponse
+			req UserCreateRequest
+			res UserCreateResponse
 		)
 
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

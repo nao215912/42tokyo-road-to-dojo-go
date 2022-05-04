@@ -13,6 +13,18 @@ func Serve(addr string) {
 	/* ===== URLマッピングを行う ===== */
 	http.HandleFunc("/setting/get", get(handler.HandleSettingGet()))
 
+	http.HandleFunc("/user/create", post(handler.HandleUserCreate()))
+	http.HandleFunc("/user/get", get(handler.HandleUserGet()))
+	http.HandleFunc("/user/update", post(handler.HandleUserUpdate()))
+
+	http.HandleFunc("/game/finish", post(handler.HandleGameFinish()))
+
+	http.HandleFunc("/gacha/draw", post(handler.HandleGachaDraw()))
+
+	http.HandleFunc("/ranking/list", get(handler.HandleRankingList()))
+
+	http.HandleFunc("/collection/list", get(handler.HandleCollectionList()))
+
 	// TODO: 認証を行うmiddlewareを実装する
 	// middlewareは pkg/http/middleware パッケージを利用する
 	// http.HandleFunc("/user/get",

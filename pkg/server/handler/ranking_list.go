@@ -1,21 +1,23 @@
-package user
+package handler
 
 import (
 	"encoding/json"
 	"net/http"
 )
 
-type GetResponse struct {
-	Id        string `json:"id"`
-	Name      string `json:"name"`
-	HighScore int    `json:"highScore"`
-	Coin      int    `json:"coin"`
+type RankingListResponse struct {
+	Ranks []struct {
+		UserId   string `json:"userId"`
+		UserName string `json:"userName"`
+		Rank     int    `json:"rank"`
+		Score    int    `json:"score"`
+	} `json:"ranks"`
 }
 
-func HandleGet() http.HandlerFunc {
+func HandleRankingList() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			res GetResponse
+			res RankingListResponse
 		)
 
 		w.Header().Set("Content-Type", "application/json")

@@ -1,18 +1,21 @@
-package user
+package handler
 
 import (
 	"encoding/json"
 	"net/http"
 )
 
-type UpdateResponse struct {
-	Name string `json:"name"`
+type UserGetResponse struct {
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	HighScore int    `json:"highScore"`
+	Coin      int    `json:"coin"`
 }
 
-func HandleUpdate() http.HandlerFunc {
+func HandleUserGet() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			res UpdateResponse
+			res UserGetResponse
 		)
 
 		w.Header().Set("Content-Type", "application/json")
