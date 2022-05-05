@@ -6,7 +6,8 @@ import (
 )
 
 func InitDB() (*sql.DB, error) {
-	db, err := sql.Open("mysql", "root:ca-tech-dojo@tcp(localhost:3306)/sample?charset=utf8&parseTime=True&loc=Local")
+	const dsn = "root:ca-tech-dojo@tcp(localhost:3306)/sample?charset=utf8&parseTime=True&loc=Local"
+	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		return nil, err
 	}
