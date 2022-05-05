@@ -32,7 +32,7 @@ func (u *user) FindByToken(ctx context.Context, token string) (*object.User, err
 	const query = `select id, name, token, high_score, coin, created_at, updated_at from users where token = ?`
 	var user object.User
 
-	err := StructScan(&user, u.db.QueryRowContext(ctx, query, token))
+	err := structScan(&user, u.db.QueryRowContext(ctx, query, token))
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (u *user) FindByName(ctx context.Context, name string) (*object.User, error
 	const query = `select id, name, token, high_score, coin, created_at, updated_at from users where name = ?`
 	var user object.User
 
-	err := StructScan(&user, u.db.QueryRowContext(ctx, query, name))
+	err := structScan(&user, u.db.QueryRowContext(ctx, query, name))
 	if err != nil {
 		return nil, err
 	}
