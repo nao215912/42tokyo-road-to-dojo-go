@@ -8,18 +8,23 @@ import (
 type UserGetResponse struct {
 	Id        string `json:"id"`
 	Name      string `json:"name"`
-	HighScore int    `json:"highScore"`
-	Coin      int    `json:"coin"`
+	HighScore int64  `json:"highScore"`
+	Coin      int64  `json:"coin"`
 }
 
 func HandleUserGet() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var (
-			res UserGetResponse
-		)
-		// Todo: error handle
-		res.Name, _ = middleware.UserOf(r)
-
+		user, err := middleware.UserOf(r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		res := UserGetResponse{
+			Id:        user.ID,
+			Name:      user.Name,
+			HighScore: user.HighScore,
+			Coin:      user.Coin,
+		}
 		WriteJson(w, &res)
 	}
 }

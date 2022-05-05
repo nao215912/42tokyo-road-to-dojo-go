@@ -5,7 +5,7 @@ swag:
 	docker-compose up swagger-ui
 
 mysql:
-	docker-compose up mysql
+	docker-compose exec mysql mysql -u root -p ca-tech-dojo
 
 down:
 	docker-compose down

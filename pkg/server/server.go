@@ -1,6 +1,7 @@
 package server
 
 import (
+	"42tokyo-road-to-dojo-go/pkg/database/dao"
 	"42tokyo-road-to-dojo-go/pkg/http/middleware"
 	"log"
 	"net/http"
@@ -11,20 +12,25 @@ import (
 // Serve HTTPサーバを起動する
 func Serve(addr string) {
 
+	d, err := dao.NewDao()
+	if err != nil {
+		log.Fatalf("Listen and serve failed. %+v", err)
+	}
+
 	/* ===== URLマッピングを行う ===== */
 	http.HandleFunc("/setting/get", get(handler.HandleSettingGet()))
 
-	http.HandleFunc("/user/create", post(handler.HandleUserCreate()))
-	http.HandleFunc("/user/get", get(middleware.Authenticate(handler.HandleUserGet())))
-	http.HandleFunc("/user/update", post(middleware.Authenticate(handler.HandleUserUpdate())))
+	http.HandleFunc("/user/create", post(handler.HandleUserCreate(d)))
+	http.HandleFunc("/user/get", get(middleware.Authenticate(d, handler.HandleUserGet())))
+	http.HandleFunc("/user/update", post(middleware.Authenticate(d, handler.HandleUserUpdate(d))))
 
-	http.HandleFunc("/game/finish", post(middleware.Authenticate(handler.HandleGameFinish())))
+	http.HandleFunc("/game/finish", post(middleware.Authenticate(d, handler.HandleGameFinish())))
 
-	http.HandleFunc("/gacha/draw", post(middleware.Authenticate(handler.HandleGachaDraw())))
+	http.HandleFunc("/gacha/draw", post(middleware.Authenticate(d, handler.HandleGachaDraw())))
 
-	http.HandleFunc("/ranking/list", get(middleware.Authenticate(handler.HandleRankingList())))
+	http.HandleFunc("/ranking/list", get(middleware.Authenticate(d, handler.HandleRankingList())))
 
-	http.HandleFunc("/collection/list", get(middleware.Authenticate(handler.HandleCollectionList())))
+	http.HandleFunc("/collection/list", get(middleware.Authenticate(d, handler.HandleCollectionList())))
 
 	// TODO: 認証を行うmiddlewareを実装する
 	// middlewareは pkg/http/middleware パッケージを利用する
@@ -33,7 +39,7 @@ func Serve(addr string) {
 
 	/* ===== サーバの起動 ===== */
 	log.Println("Server running...")
-	err := http.ListenAndServe(addr, nil)
+	err = http.ListenAndServe(addr, nil)
 	if err != nil {
 		log.Fatalf("Listen and serve failed. %+v", err)
 	}

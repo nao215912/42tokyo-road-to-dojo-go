@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"42tokyo-road-to-dojo-go/pkg/database/dao"
 	"encoding/json"
 	"net/http"
 )
@@ -13,7 +14,7 @@ type UserCreateResponse struct {
 	Token string `json:"token"`
 }
 
-func HandleUserCreate() http.HandlerFunc {
+func HandleUserCreate(d dao.Dao) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
 			req UserCreateRequest
@@ -24,6 +25,13 @@ func HandleUserCreate() http.HandlerFunc {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
+
+		user, err := d.NewUser().Create(r.Context(), req.Name)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		res.Token = user.Token
 
 		WriteJson(w, &res)
 	}
